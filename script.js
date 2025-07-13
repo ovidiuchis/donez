@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
       updateStats();
       renderItems();
       setupEventListeners();
+      // Hide loader overlay
+      const loader = document.getElementById("loaderOverlay");
+      if (loader) loader.style.display = "none";
       // Setup event listeners for search
       function setupEventListeners() {
         const searchInput = document.getElementById("searchInput");
