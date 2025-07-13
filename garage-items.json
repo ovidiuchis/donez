@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "title": "Masă de Cafea Vintage",
+    "description": "Frumoasă masă de cafea din lemn cu picioare metalice. Zgârieturi minore dar foarte solidă. Perfectă pentru living sau apartament.",
+    "images": [
+      "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop"
+    ],
+    "originalLink": "https://example.com/coffee-table",
+    "isAvailable": true,
+    "dateAdded": "2024-01-15"
+  },
+  {
+    "id": "2",
+    "title": "Colecție Ghivece de Plante",
+    "description": "Set de 6 ghivece ceramice în diverse mărimi. Excelente pentru plante de interior. Unele au ciobituri mici dar încă funcționale.",
+    "images": [
+      "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&h=400&fit=crop"
+    ],
+    "isAvailable": true,
+    "dateAdded": "2024-01-14"
+  },
+  {
+    "id": "3",
+    "title": "Set Ustensile de Bucătărie",
+    "description": "Set complet de ustensile de gătit incluzând spatule, polonic și cleștișor. Vârfuri din silicon, rezistente la căldură. Folosite foarte puțin.",
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1594736797933-d0f4ed92fd16?w=600&h=400&fit=crop"
+    ],
+    "originalLink": "https://amazon.com/kitchen-utensils",
+    "isAvailable": true,
+    "dateAdded": "2024-01-13"
+  },
+  {
+    "id": "4",
+    "title": "Lampă de Citit",
+    "description": "Lampă de birou reglabilă cu bec LED inclus. Perfectă pentru citit sau lucru. Uzură pe bază dar funcționează perfect.",
+    "images": [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+    ],
+    "isAvailable": false,
+    "dateAdded": "2024-01-12"
+  },
+  {
+    "id": "5",
+    "title": "Perne Decorative (Set de 4)",
+    "description": "Perne decorative în culori neutre. Huse lavabile la mașină. Excelente pentru decorarea canapelei sau patului.",
+    "images": [
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop"
+    ],
+    "isAvailable": true,
+    "dateAdded": "2024-01-11"
+  },
+  {
+    "id": "6",
+    "title": "Rame pentru Fotografii (Mărimi Diverse)",
+    "description": "Colecție de 8 rame pentru fotografii în diverse mărimi. Unele din lemn, altele din metal. Excelente pentru fotografii de familie sau artă.",
+    "images": [
+      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&h=400&fit=crop"
+    ],
+    "originalLink": "https://target.com/picture-frames",
+    "isAvailable": true,
+    "dateAdded": "2024-01-10"
+  }
+]

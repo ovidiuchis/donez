@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vânzare de Garaj Gratuită</title>
+    <meta name="description" content="Obiecte gratuite căutând case noi" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="header-info">
+            <h1 class="header-title">Donez diverse</h1>
+            <p class="header-subtitle">
+              Lucruri bune caută casă nouă – complet gratuit!
+            </p>
+          </div>
+          <div class="header-actions">
+            <div class="stats-badge">
+              <div class="stats-label">Obiecte Disponibile</div>
+              <div class="stats-number" id="availableCount">5/6</div>
+            </div>
+            <button class="btn btn-primary" onclick="openContactModal()">
+              <span class="icon">📧</span>
+              Contactează-mă
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Stats Section -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🎁</div>
+            <div class="stat-info">
+              <div class="stat-number" id="availableStats">5</div>
+              <div class="stat-label">Obiecte Disponibile</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">⏰</div>
+            <div class="stat-info">
+              <div class="stat-number">Gratuit</div>
+              <div class="stat-label">Doar Ridicare</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">📍</div>
+            <div class="stat-info">
+              <div class="stat-number">Local</div>
+              <div class="stat-label">Cluj Napoca</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+          <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Caută obiecte..."
+              class="search-input"
+            />
+          </div>
+
+          <div class="filter-controls">
+            <span class="filter-label">Filtrare:</span>
+            <button
+              class="btn btn-filter"
+              id="availableFilter"
+              onclick="toggleAvailableFilter()"
+            >
+              Doar Disponibile
+            </button>
+            <button class="btn btn-clear" onclick="clearFilters()">
+              <span class="icon">✕</span>
+              Șterge Filtrele
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Count -->
+        <div class="results-info">
+          <span id="resultsCount">Se afișează 6 din 6 obiecte</span>
+        </div>
+
+        <!-- Items Grid -->
+        <div class="items-grid" id="itemsGrid">
+          <!-- Items will be populated by JavaScript -->
+        </div>
+
+        <!-- No Results -->
+        <div class="no-results" id="noResults" style="display: none">
+          <div class="no-results-content">
+            <div class="no-results-icon">🔍</div>
+            <h3 class="no-results-title">Niciun obiect găsit</h3>
+            <p class="no-results-text">
+              Încearcă să ajustezi căutarea pentru a găsi ceea ce cauți.
+            </p>
+            <button class="btn btn-outline" onclick="clearFilters()">
+              Șterge Toate Filtrele
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <h3 class="footer-title">Întrebări despre obiecte?</h3>
+          <p class="footer-text">
+            Toate obiectele sunt primul venit, primul servit. Contactează-mă
+            pentru a organiza ridicarea!
+          </p>
+          <button class="btn btn-primary" onclick="openContactModal()">
+            Contactează-mă
+          </button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Item Modal -->
+    <div class="modal-backdrop" id="itemModal" onclick="closeItemModal(event)">
+      <div class="modal-content item-modal">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">Titlu Obiect</h2>
+          <div class="modal-badges" id="modalBadges"></div>
+          <button class="btn-close" onclick="closeItemModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="image-gallery">
+            <img id="modalImage" src="" alt="" class="modal-image" />
+            <div class="image-dots" id="imageDots"></div>
+          </div>
+
+          <div class="modal-info">
+            <div class="info-section">
+              <h3 class="info-title">Descriere</h3>
+              <p class="info-text" id="modalDescription"></p>
+            </div>
+
+            <div class="info-section">
+              <div class="date-info">
+                <span class="icon">📅</span>
+                <span id="modalDate">Listat pe 15 ianuarie 2024</span>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button
+                class="btn btn-primary"
+                id="contactItemBtn"
+                onclick="contactAboutItem()"
+              >
+                Contactează-mă Pentru Acest Obiect
+              </button>
+              <button
+                class="btn btn-outline"
+                id="originalLinkBtn"
+                onclick="openOriginalLink()"
+                style="display: none"
+              >
+                <span class="icon">🔗</span>
+                Vezi Originalul
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div
+      class="modal-backdrop"
+      id="contactModal"
+      onclick="closeContactModal(event)"
+    >
+      <div class="modal-content contact-modal">
+        <div class="modal-header">
+          <h2 class="modal-title">Contactează-mă</h2>
+          <button class="btn-close" onclick="closeContactModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="contact-intro">
+            Primul venit, primul servit și trebuie ridicate!
+          </p>
+
+          <div class="contact-methods">
+            <a
+              class="contact-method"
+              href="https://wa.me/40730020215"
+              target="_blank"
+              rel="noopener"
+            >
+              <div class="contact-icon">�</div>
+              <div class="contact-info">
+                <h3 class="contact-title">WhatsApp</h3>
+                <p class="contact-detail">+40 730 020 215</p>
+              </div>
+            </a>
+
+            <div class="contact-method">
+              <div class="contact-icon">📍</div>
+              <div class="contact-info">
+                <h3 class="contact-title">Locația de Ridicare</h3>
+                <p class="contact-detail">Cartierul Bună ziua</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
