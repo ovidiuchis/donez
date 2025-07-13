@@ -2,24 +2,24 @@
 
 // Load garageItems from JSON file
 let garageItems = [];
+let filteredItems = [];
 
+// Contact info (only WhatsApp and location are used)
 const contactInfo = {
-  email: "hello@freegaraggsale.com",
-  phone: "(555) 123-4567",
-  location: "Zona Centrală, Oraș",
+  phone: "+40730020215",
+  location: "https://maps.app.goo.gl/AyPsEuipgAnCLiy96",
+  name: "Numele tău aici", // personalizează dacă vrei
 };
 
 // State management
-let filteredItems = [];
 let searchTerm = "";
-let showAvailableOnly = false;
 let currentItem = null;
 let currentImageIndex = 0;
 
 // DOM elements
 const itemsGrid = document.getElementById("itemsGrid");
-const searchInput = document.getElementById("searchInput");
-const availableFilter = document.getElementById("availableFilter");
+const searchInput = document.getElementById("searchInput"); // not used, but kept for possible future search
+const availableFilter = document.getElementById("availableFilter"); // not used, but kept for possible future filter
 const resultsCount = document.getElementById("resultsCount");
 const noResults = document.getElementById("noResults");
 const itemModal = document.getElementById("itemModal");
@@ -49,8 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const items = csvToArray(csv);
       // Optionally, map/convert fields to match your app's expectations
       garageItems = items.map((item) => {
-        // Trim all fields
-        const id = (item.ID || "").trim();
+        // Trim all fields (no more id)
         const title = (item.Titlu || "").trim();
         const description = (item.Descriere || "").trim();
         const imagesRaw = (item.Imagini || "").trim();
@@ -66,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
           disponibil === "da" || disponibil === "1" || disponibil === "true";
         const dateAdded = (item.Data || "").trim();
         return {
-          id,
           title,
           description,
           images,
@@ -79,20 +77,53 @@ document.addEventListener("DOMContentLoaded", function () {
       updateStats();
       renderItems();
       setupEventListeners();
+      // Setup event listeners for search
+      function setupEventListeners() {
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+          searchInput.addEventListener("input", function (e) {
+            searchTerm = e.target.value.toLowerCase();
+            filterItems();
+          });
+        }
+      }
+
+      // Filter items based on search
+      function filterItems() {
+        filteredItems = garageItems.filter((item) => {
+          if (searchTerm) {
+            const matchesSearch =
+              item.title.toLowerCase().includes(searchTerm) ||
+              item.description.toLowerCase().includes(searchTerm);
+            if (!matchesSearch) return false;
+          }
+          return true;
+        });
+        renderItems();
+        updateResultsCount();
+      }
+
+      // Update results count
+      function updateResultsCount() {
+        const count = filteredItems.length;
+        const total = garageItems.length;
+        if (resultsCount)
+          resultsCount.textContent = `Se afișează ${count} din ${total} obiecte`;
+
+        if (count === 0) {
+          if (itemsGrid) itemsGrid.style.display = "none";
+          if (noResults) noResults.style.display = "block";
+        } else {
+          if (itemsGrid) itemsGrid.style.display = "grid";
+          if (noResults) noResults.style.display = "none";
+        }
+      }
     })
     .catch((err) => {
       console.error("Eroare la încărcarea CSV", err);
       // fallback: show nothing
     });
 });
-
-// Setup event listeners
-function setupEventListeners() {
-  searchInput.addEventListener("input", function (e) {
-    searchTerm = e.target.value.toLowerCase();
-    filterItems();
-  });
-}
 
 // Update statistics
 function updateStats() {
@@ -105,50 +136,10 @@ function updateStats() {
   if (availableStatsEl) availableStatsEl.textContent = availableCount;
 }
 
-// Filter items based on search and filters
-function filterItems() {
-  filteredItems = garageItems.filter((item) => {
-    // Search filter
-    if (searchTerm) {
-      const matchesSearch =
-        item.title.toLowerCase().includes(searchTerm) ||
-        item.description.toLowerCase().includes(searchTerm);
-      if (!matchesSearch) return false;
-    }
-
-    // Available only filter
-    if (showAvailableOnly && !item.isAvailable) {
-      return false;
-    }
-
-    return true;
-  });
-
-  renderItems();
-  updateResultsCount();
-}
-
-// Update results count
-function updateResultsCount() {
-  const count = filteredItems.length;
-  const total = garageItems.length;
-  if (resultsCount)
-    resultsCount.textContent = `Se afișează ${count} din ${total} obiecte`;
-
-  if (count === 0) {
-    if (itemsGrid) itemsGrid.style.display = "none";
-    if (noResults) noResults.style.display = "block";
-  } else {
-    if (itemsGrid) itemsGrid.style.display = "grid";
-    if (noResults) noResults.style.display = "none";
-  }
-}
-
 // Render items grid
 function renderItems() {
   itemsGrid.innerHTML = "";
-
-  filteredItems.forEach((item) => {
+  (filteredItems.length ? filteredItems : garageItems).forEach((item) => {
     const itemCard = createItemCard(item);
     itemsGrid.appendChild(itemCard);
   });
@@ -279,21 +270,6 @@ function closeContactModal(event) {
   document.body.style.overflow = "";
 }
 
-// Filter functions
-function toggleAvailableFilter() {
-  showAvailableOnly = !showAvailableOnly;
-  availableFilter.classList.toggle("active", showAvailableOnly);
-  filterItems();
-}
-
-function clearFilters() {
-  searchTerm = "";
-  showAvailableOnly = false;
-  searchInput.value = "";
-  availableFilter.classList.remove("active");
-  filterItems();
-}
-
 // Contact functions
 function contactAboutItem() {
   if (!currentItem) return;
@@ -304,12 +280,12 @@ function contactAboutItem() {
   window.open(whatsappUrl, "_blank");
 }
 
-function sendEmail() {
-  window.location.href = `mailto:${contactInfo.email}`;
-}
-
-function callPhone() {
-  window.location.href = `tel:${contactInfo.phone}`;
+// Clear search filter
+function clearFilters() {
+  searchTerm = "";
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) searchInput.value = "";
+  filterItems();
 }
 
 function openOriginalLink() {
