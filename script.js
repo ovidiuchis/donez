@@ -8,7 +8,7 @@ let filteredItems = [];
 const contactInfo = {
   phone: "+40730020215",
   location: "https://maps.app.goo.gl/AyPsEuipgAnCLiy96",
-  name: "",
+  name: ""
 };
 
 // State management
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function csvToArray(str, delimiter = ",") {
     const rows = str.trim().split("\n");
     const headers = rows.shift().split(delimiter);
-    return rows.map((row) => {
+    return rows.map(row => {
       const values = row.split(delimiter);
       return headers.reduce((obj, header, i) => {
         obj[header.trim()] = values[i]?.trim() || "";
@@ -44,11 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   fetch(SHEET_CSV_URL)
-    .then((res) => res.text())
-    .then((csv) => {
+    .then(res => res.text())
+    .then(csv => {
       const items = csvToArray(csv);
       // Optionally, map/convert fields to match your app's expectations
-      garageItems = items.map((item) => {
+      garageItems = items.map(item => {
         // Trim all fields (no more id)
         const title = (item.Titlu || "").trim();
         const description = (item.Descriere || "").trim();
@@ -56,13 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const images = imagesRaw
           ? imagesRaw
               .split("|")
-              .map((url) => url.trim())
+              .map(url => url.trim())
               .filter(Boolean)
           : [];
         const originalLink = (item.Link || "").trim();
         const disponibil = (item.Disponibil || "").trim().toLowerCase();
-        const isAvailable =
-          disponibil === "da" || disponibil === "1" || disponibil === "true";
+        const isAvailable = disponibil === "da" || disponibil === "1" || disponibil === "true";
         const dateAdded = (item.Data || "").trim();
         return {
           title,
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
           images,
           originalLink,
           isAvailable,
-          dateAdded,
+          dateAdded
         };
       });
       filteredItems = [...garageItems];
@@ -93,11 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Filter items based on search
       function filterItems() {
-        filteredItems = garageItems.filter((item) => {
+        filteredItems = garageItems.filter(item => {
           if (searchTerm) {
             const matchesSearch =
-              item.title.toLowerCase().includes(searchTerm) ||
-              item.description.toLowerCase().includes(searchTerm);
+              item.title.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm);
             if (!matchesSearch) return false;
           }
           return true;
@@ -110,8 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
       function updateResultsCount() {
         const count = filteredItems.length;
         const total = garageItems.length;
-        if (resultsCount)
-          resultsCount.textContent = `Se afișează ${count} din ${total} obiecte`;
+        if (resultsCount) resultsCount.textContent = `Se afișează ${count} din ${total} obiecte`;
 
         if (count === 0) {
           if (itemsGrid) itemsGrid.style.display = "none";
@@ -122,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     })
-    .catch((err) => {
+    .catch(err => {
       console.error("Eroare la încărcarea CSV", err);
       // fallback: show nothing
     });
@@ -130,19 +127,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Update statistics
 function updateStats() {
-  const availableCount = garageItems.filter((item) => item.isAvailable).length;
+  const availableCount = garageItems.filter(item => item.isAvailable).length;
   const totalCount = garageItems.length;
   const availableCountEl = document.getElementById("availableCount");
   const availableStatsEl = document.getElementById("availableStats");
-  if (availableCountEl)
-    availableCountEl.textContent = `${availableCount}/${totalCount}`;
+  if (availableCountEl) availableCountEl.textContent = `${availableCount}/${totalCount}`;
   if (availableStatsEl) availableStatsEl.textContent = availableCount;
 }
 
 // Render items grid
 function renderItems() {
   itemsGrid.innerHTML = "";
-  (filteredItems.length ? filteredItems : garageItems).forEach((item) => {
+  (filteredItems.length ? filteredItems : garageItems).forEach(item => {
     const itemCard = createItemCard(item);
     itemsGrid.appendChild(itemCard);
   });
@@ -198,9 +194,7 @@ function openItemModal(item) {
 
   document.getElementById("modalTitle").textContent = item.title;
   document.getElementById("modalDescription").textContent = item.description;
-  document.getElementById("modalDate").textContent = `Listat pe ${formatDate(
-    item.dateAdded
-  )}`;
+  document.getElementById("modalDate").textContent = `Listat pe ${formatDate(item.dateAdded)}`;
 
   // Update badges
   const modalBadges = document.getElementById("modalBadges");
@@ -244,9 +238,7 @@ function updateModalImage() {
     imageDots.innerHTML = currentItem.images
       .map(
         (_, index) =>
-          `<div class="image-dot ${
-            index === currentImageIndex ? "active" : ""
-          }" 
+          `<div class="image-dot ${index === currentImageIndex ? "active" : ""}" 
                   onclick="changeImage(${index})"></div>`
       )
       .join("");
@@ -277,9 +269,7 @@ function closeContactModal(event) {
 function contactAboutItem() {
   if (!currentItem) return;
   const message = `Salut! Sunt interesat de "${currentItem.title}" pe care îl donezi. Mai este disponibil?`;
-  const whatsappUrl = `https://wa.me/40730020215?text=${encodeURIComponent(
-    message
-  )}`;
+  const whatsappUrl = `https://wa.me/40730020215?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 }
 
@@ -305,13 +295,13 @@ function formatDate(dateString) {
     return fallbackDate.toLocaleDateString("ro-RO", {
       year: "numeric",
       month: "long",
-      day: "numeric",
+      day: "numeric"
     });
   }
   // Try dd/mm/yyyy
   const parts = dateString.split("/");
   if (parts.length === 3) {
-    let [day, month, year] = parts.map((p) => p.trim());
+    let [day, month, year] = parts.map(p => p.trim());
     const d = parseInt(day, 10);
     const m = parseInt(month, 10);
     const y = parseInt(year, 10);
@@ -321,7 +311,7 @@ function formatDate(dateString) {
         return date.toLocaleDateString("ro-RO", {
           year: "numeric",
           month: "long",
-          day: "numeric",
+          day: "numeric"
         });
       }
     }
@@ -332,14 +322,14 @@ function formatDate(dateString) {
     return date.toLocaleDateString("ro-RO", {
       year: "numeric",
       month: "long",
-      day: "numeric",
+      day: "numeric"
     });
   }
   // If all else fails, fallback
   return fallbackDate.toLocaleDateString("ro-RO", {
     year: "numeric",
     month: "long",
-    day: "numeric",
+    day: "numeric"
   });
 }
 

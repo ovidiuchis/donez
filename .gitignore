@@ -1,0 +1,32 @@
+*.log
+*.tmp
+*.DS_Store
+*.env
+Thumbs.db
+
+# IDE folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Prettier configuration
+.prettierrc
+
+# Node modules (if any node dependencies are added)
+node_modules/
+
+# Dist / Build folders
+dist/
+build/
+out/
+
+# Cache and temp files
+.cache/
+.temp/
+*.bak
+*.swp
+
+# System files
+*.DS_Store
+Thumbs.db
