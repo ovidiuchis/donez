@@ -8,7 +8,7 @@ let filteredItems = [];
 const contactInfo = {
   phone: "+40730020215",
   location: "https://maps.app.goo.gl/AyPsEuipgAnCLiy96",
-  name: "Numele tău aici", // personalizează dacă vrei
+  name: "",
 };
 
 // State management
