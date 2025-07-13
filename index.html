@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vânzare de Garaj Gratuită</title>
+    <title>Obiecte de donat</title>
     <meta name="description" content="Obiecte gratuite căutând case noi" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +27,7 @@
           <div class="header-actions">
             <div class="stats-badge">
               <div class="stats-label">Obiecte Disponibile</div>
-              <div class="stats-number" id="availableCount">5/6</div>
+              <div class="stats-number" id="availableCount">0</div>
             </div>
             <button class="btn btn-primary" onclick="openContactModal()">
               <span class="icon">📧</span>
@@ -128,8 +128,7 @@
         <div class="footer-content">
           <h3 class="footer-title">Întrebări despre obiecte?</h3>
           <p class="footer-text">
-            Toate obiectele sunt primul venit, primul servit. Contactează-mă
-            pentru a organiza ridicarea!
+            Primul venit, primul servit. Contactează-mă!
           </p>
           <button class="btn btn-primary" onclick="openContactModal()">
             Contactează-mă
@@ -197,7 +196,7 @@
     >
       <div class="modal-content contact-modal">
         <div class="modal-header">
-          <h2 class="modal-title">Contactează-mă</h2>
+          <h2 class="modal-title">Ovidiu CHIȘ</h2>
           <button class="btn-close" onclick="closeContactModal()">✕</button>
         </div>
 
@@ -213,20 +212,37 @@
               target="_blank"
               rel="noopener"
             >
-              <div class="contact-icon">�</div>
+              <div class="contact-icon" style="background: none; padding: 0">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                  alt="WhatsApp"
+                  style="width: 28px; height: 28px; display: block"
+                />
+              </div>
               <div class="contact-info">
                 <h3 class="contact-title">WhatsApp</h3>
                 <p class="contact-detail">+40 730 020 215</p>
               </div>
             </a>
 
-            <div class="contact-method">
+            <a
+              class="contact-method"
+              href="https://maps.app.goo.gl/AyPsEuipgAnCLiy96"
+              target="_blank"
+              rel="noopener"
+            >
               <div class="contact-icon">📍</div>
               <div class="contact-info">
                 <h3 class="contact-title">Locația de Ridicare</h3>
                 <p class="contact-detail">Cartierul Bună ziua</p>
+                <p
+                  class="contact-detail"
+                  style="font-size: 0.95em; color: var(--color-primary)"
+                >
+                  Vezi pe Google Maps
+                </p>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>

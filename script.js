@@ -27,17 +27,61 @@ const contactModal = document.getElementById("contactModal");
 
 // Initialize the app
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("garage-items.json")
-    .then((res) => res.json())
-    .then((data) => {
-      garageItems = data;
+  // Load items from Google Sheets CSV
+  const SHEET_CSV_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSd9ak0x4hKnlFnEoU313y5mk4a1K2yHsYL_6Q-JTU5DDjnZLreqVOsuVe808xA5JmfyeRplGOpM8H7/pub?gid=0&single=true&output=csv";
+
+  function csvToArray(str, delimiter = ",") {
+    const rows = str.trim().split("\n");
+    const headers = rows.shift().split(delimiter);
+    return rows.map((row) => {
+      const values = row.split(delimiter);
+      return headers.reduce((obj, header, i) => {
+        obj[header.trim()] = values[i]?.trim() || "";
+        return obj;
+      }, {});
+    });
+  }
+
+  fetch(SHEET_CSV_URL)
+    .then((res) => res.text())
+    .then((csv) => {
+      const items = csvToArray(csv);
+      // Optionally, map/convert fields to match your app's expectations
+      garageItems = items.map((item) => {
+        // Trim all fields
+        const id = (item.ID || "").trim();
+        const title = (item.Titlu || "").trim();
+        const description = (item.Descriere || "").trim();
+        const imagesRaw = (item.Imagini || "").trim();
+        const images = imagesRaw
+          ? imagesRaw
+              .split("|")
+              .map((url) => url.trim())
+              .filter(Boolean)
+          : [];
+        const originalLink = (item.Link || "").trim();
+        const disponibil = (item.Disponibil || "").trim().toLowerCase();
+        const isAvailable =
+          disponibil === "da" || disponibil === "1" || disponibil === "true";
+        const dateAdded = (item.Data || "").trim();
+        return {
+          id,
+          title,
+          description,
+          images,
+          originalLink,
+          isAvailable,
+          dateAdded,
+        };
+      });
       filteredItems = [...garageItems];
       updateStats();
       renderItems();
       setupEventListeners();
     })
     .catch((err) => {
-      console.error("Eroare la încărcarea garage-items.json", err);
+      console.error("Eroare la încărcarea CSV", err);
       // fallback: show nothing
     });
 });
@@ -253,13 +297,11 @@ function clearFilters() {
 // Contact functions
 function contactAboutItem() {
   if (!currentItem) return;
-
-  const subject = `Interesat de: ${currentItem.title}`;
-  const body = `Salut! Sunt interesat de "${currentItem.title}" pe care îl ai disponibil gratuit. Mai este disponibil?`;
-
-  window.location.href = `mailto:${
-    contactInfo.email
-  }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const message = `Salut! Sunt interesat de "${currentItem.title}" pe care îl donezi. Mai este disponibil?`;
+  const whatsappUrl = `https://wa.me/40730020215?text=${encodeURIComponent(
+    message
+  )}`;
+  window.open(whatsappUrl, "_blank");
 }
 
 function sendEmail() {
@@ -278,8 +320,44 @@ function openOriginalLink() {
 
 // Utility functions
 function formatDate(dateString) {
+  // Fallback date: 12.07.2025
+  const fallbackDate = new Date(Date.UTC(2025, 6, 12));
+  if (!dateString) {
+    return fallbackDate.toLocaleDateString("ro-RO", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+  // Try dd/mm/yyyy
+  const parts = dateString.split("/");
+  if (parts.length === 3) {
+    let [day, month, year] = parts.map((p) => p.trim());
+    const d = parseInt(day, 10);
+    const m = parseInt(month, 10);
+    const y = parseInt(year, 10);
+    if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
+      const date = new Date(Date.UTC(y, m - 1, d));
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString("ro-RO", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+    }
+  }
+  // fallback
   const date = new Date(dateString);
-  return date.toLocaleDateString("ro-RO", {
+  if (!isNaN(date.getTime())) {
+    return date.toLocaleDateString("ro-RO", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
+  // If all else fails, fallback
+  return fallbackDate.toLocaleDateString("ro-RO", {
     year: "numeric",
     month: "long",
     day: "numeric",

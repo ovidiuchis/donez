@@ -1,3 +1,14 @@
+.contact-method {
+  text-decoration: none;
+}
+
+.contact-method:visited {
+  text-decoration: none;
+}
+
+.contact-method:hover {
+  text-decoration: none;
+}
 /* Modern Garage Sale CSS */
 
 :root {
@@ -187,6 +198,27 @@ h6 {
   position: sticky;
   top: 0;
   z-index: 100;
+  overflow: hidden;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120vw;
+  height: 180px;
+  background: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" viewBox="0 0 1200 180" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="600" cy="90" rx="600" ry="90" fill="%2300b4d8" fill-opacity="0.18"/><ellipse cx="900" cy="60" rx="200" ry="40" fill="%233a86ff" fill-opacity="0.10"/><ellipse cx="300" cy="120" rx="180" ry="30" fill="%2300cba9" fill-opacity="0.10"/></svg>');
+  background-repeat: no-repeat;
+  background-size: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
 }
 
 .header-content {
@@ -194,8 +226,40 @@ h6 {
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0 var(--spacing-md) 0;
   flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0 var(--spacing-sm) 0;
+  }
+  .header-info {
+    width: 100%;
+    margin-bottom: var(--spacing-xs);
+    text-align: left;
+  }
+  .header-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: 0.1em;
+  }
+  .header-subtitle {
+    font-size: var(--font-size-sm);
+    margin-bottom: 0.2em;
+  }
+  .header-actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--spacing-sm);
+    margin-top: 0;
+  }
+  .stats-badge {
+    text-align: left;
+  }
 }
 
 .header-title {
@@ -217,12 +281,16 @@ h6 {
 }
 
 .stats-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   text-align: right;
 }
 
 .stats-label {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  margin-right: 0.2em;
 }
 
 .stats-number {
@@ -233,7 +301,7 @@ h6 {
 
 /* Main Content */
 .main {
-  padding: var(--spacing-xl) 0;
+  padding: var(--spacing-md) 0;
 }
 
 /* Stats Grid */
@@ -241,7 +309,7 @@ h6 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 .stat-card {
@@ -280,7 +348,7 @@ h6 {
 
 /* Search Section */
 .search-section {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
   space-y: var(--spacing-md);
 }
 
@@ -328,7 +396,7 @@ h6 {
 
 /* Results Info */
 .results-info {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
@@ -664,14 +732,16 @@ h6 {
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--color-primary-light);
+  background: var(--color-surface);
   border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   cursor: pointer;
   transition: all var(--transition-normal);
 }
 
 .contact-method:hover {
-  background: rgba(249, 115, 22, 0.2);
+  background: #f3f4f6;
+  border-color: var(--color-primary-light);
 }
 
 .contact-icon {
@@ -724,6 +794,14 @@ h6 {
 
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .stat-card {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+    margin-bottom: 0;
   }
 
   .items-grid {
