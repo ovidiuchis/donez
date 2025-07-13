@@ -153,9 +153,10 @@ function createItemCard(item) {
   const isAvailable = item.isAvailable;
   const hasOriginalLink = item.originalLink;
 
+  const imageUrl = item.images && item.images[0] ? item.images[0] : "assets/default.png";
   card.innerHTML = `
         <div class="item-image-container">
-            <img src="${item.images[0]}" alt="${item.title}" class="item-image">
+            <img src="${imageUrl}" alt="${item.title}" class="item-image">
             ${
               !isAvailable
                 ? `
@@ -229,12 +230,15 @@ function updateModalImage() {
   if (!currentItem) return;
 
   const modalImage = document.getElementById("modalImage");
-  modalImage.src = currentItem.images[currentImageIndex];
+  const imageUrl = currentItem.images && currentItem.images[currentImageIndex]
+    ? currentItem.images[currentImageIndex]
+    : "assets/default.png";
+  modalImage.src = imageUrl;
   modalImage.alt = currentItem.title;
 
   // Update dots
   const imageDots = document.getElementById("imageDots");
-  if (currentItem.images.length > 1) {
+  if (currentItem.images && currentItem.images.length > 1) {
     imageDots.innerHTML = currentItem.images
       .map(
         (_, index) =>
