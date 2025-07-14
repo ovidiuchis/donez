@@ -230,9 +230,10 @@ function updateModalImage() {
   if (!currentItem) return;
 
   const modalImage = document.getElementById("modalImage");
-  const imageUrl = currentItem.images && currentItem.images[currentImageIndex]
-    ? currentItem.images[currentImageIndex]
-    : "assets/default.png";
+  const imageUrl =
+    currentItem.images && currentItem.images[currentImageIndex]
+      ? currentItem.images[currentImageIndex]
+      : "assets/default.png";
   modalImage.src = imageUrl;
   modalImage.alt = currentItem.title;
 
@@ -287,7 +288,12 @@ function clearFilters() {
 
 function openOriginalLink() {
   if (currentItem && currentItem.originalLink) {
-    window.open(currentItem.originalLink, "_blank");
+    let url = currentItem.originalLink.trim();
+    // If the link does not start with http or https, add https://
+    if (!/^https?:\/\//i.test(url)) {
+      url = "https://" + url.replace(/^\/+/, "");
+    }
+    window.open(url, "_blank");
   }
 }
 
