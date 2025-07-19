@@ -108,9 +108,35 @@
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
-          <h3 class="footer-title">Întrebări despre obiecte?</h3>
-          <p class="footer-text">Primul venit, primul servit. Contactează-mă!</p>
-          <button class="btn btn-primary" onclick="openContactModal()">Contactează-mă</button>
+          <h3 class="footer-title">Primul venit, primul servit.</h3>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap">
+            <button class="btn btn-primary" onclick="openContactModal()">Contactează-mă</button>
+            <button class="btn btn-primary" onclick="openMotivationModal()">De ce donez?</button>
+          </div>
+          <!-- Motivation Modal -->
+          <div
+            class="modal-backdrop"
+            id="motivationModal"
+            onclick="closeMotivationModal(event)"
+            style="display: flex; visibility: hidden; opacity: 0"
+          >
+            <div class="modal-content contact-modal">
+              <div class="modal-header">
+                <h2 class="modal-title">De ce donez?</h2>
+                <button class="btn-close" onclick="closeMotivationModal()">✕</button>
+              </div>
+              <div class="modal-body">
+                <p class="contact-intro" style="text-indent: 2em; margin-bottom: 1em">
+                  <b>Motivația</b> mea e simplă: cred că lucrurile bune merită folosite, nu aruncate. Și mai cred că ne face
+                  bine să ne „curățăm” din când în când spațiul de obiectele pe care nu le mai folosim.
+                </p>
+                <p class="contact-intro" style="text-indent: 2em; margin-bottom: 1em">
+                  Ba chiar, ideal ar fi să nu mai cumpărăm mereu altele noi. 😬
+                </p>
+                <p class="contact-intro" style="text-indent: 20em; margin-bottom: 1em"><b>Ovidiu</b></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
@@ -196,6 +222,21 @@
       </div>
     </div>
 
+    <script>
+      function openMotivationModal() {
+        var modal = document.getElementById("motivationModal");
+        modal.style.visibility = "visible";
+        modal.style.opacity = "1";
+        document.body.style.overflow = "hidden";
+      }
+      function closeMotivationModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        var modal = document.getElementById("motivationModal");
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        document.body.style.overflow = "";
+      }
+    </script>
     <script src="script.js"></script>
   </body>
 </html>

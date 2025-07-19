@@ -72,6 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
           dateAdded
         };
       });
+      // Sort so available items come first
+      garageItems.sort((a, b) => {
+        if (a.isAvailable === b.isAvailable) return 0;
+        return a.isAvailable ? -1 : 1;
+      });
       filteredItems = [...garageItems];
       updateStats();
       renderItems();
@@ -99,6 +104,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!matchesSearch) return false;
           }
           return true;
+        });
+        // Sort so available items come first
+        filteredItems.sort((a, b) => {
+          if (a.isAvailable === b.isAvailable) return 0;
+          return a.isAvailable ? -1 : 1;
         });
         renderItems();
         updateResultsCount();
