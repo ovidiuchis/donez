@@ -208,7 +208,7 @@ h6 {
 .btn-close {
   background: none;
   border: none;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-2xl); /* Make close button bigger */
   color: var(--color-text-muted);
   cursor: pointer;
   padding: var(--spacing-xs);
@@ -216,9 +216,11 @@ h6 {
   transition: all var(--transition-fast);
 }
 
-.btn-close:hover {
-  background: var(--color-background);
-  color: var(--color-text);
+@media (max-width: 600px) {
+  .btn-close {
+    font-size: var(--font-size-3xl); /* Even bigger on small screens */
+    padding: var(--spacing-sm);
+  }
 }
 
 .btn-full {
