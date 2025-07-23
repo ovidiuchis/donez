@@ -1,3 +1,31 @@
+/* Original Link Button Modern Style */
+#originalLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.5em 1.2em;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: #fff;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 1px 4px rgba(60, 60, 60, 0.04);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
+  height: 34px;
+  text-align: center;
+}
+#originalLinkBtn:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
 /* Loader Overlay */
 .loader-overlay {
   position: fixed;
@@ -64,6 +92,8 @@
   --color-text: #222;
   --color-text-muted: #888;
   --color-text-light: #bbb;
+  --color-success: #27ae60;
+  --color-error: #e74c3c;
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -500,11 +530,14 @@ h6 {
 
 .status-badge {
   background: var(--color-error);
-  color: white;
+  color: #fff;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: 500;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .original-link-badge {
@@ -543,12 +576,13 @@ h6 {
 
 .free-badge {
   background: var(--color-success);
-  color: white;
+  color: #fff;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
   font-weight: 500;
   white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .item-description {
@@ -610,7 +644,6 @@ h6 {
   font-weight: 600;
   color: var(--color-text-muted);
   margin-bottom: 0.5em;
-} margin-bottom: var(--spacing-sm);
 }
 
 .footer-text {
@@ -853,7 +886,6 @@ h6 {
     grid-template-columns: 1fr;
   }
 }
-
 
 @media (max-width: 480px) {
   .header-title {
