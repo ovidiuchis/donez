@@ -23,22 +23,14 @@
       <div class="loader-text">Se încarcă lucrurile...</div>
     </div>
     <!-- Header -->
-    <header class="header">
+    <header class="header header-compact">
       <div class="container">
-        <div class="header-content">
-          <div class="header-info">
-            <h1 class="header-title">Donez diverse</h1>
-            <p class="header-subtitle">Lucruri bune caută casă nouă – complet gratuit!</p>
-          </div>
-          <div class="header-actions">
-            <div class="stats-badge hide-on-mobile">
-              <div class="stats-label">Obiecte Disponibile</div>
-              <div class="stats-number" id="availableCount">0</div>
-            </div>
-            <!-- <button class="btn btn-primary" onclick="openContactModal()">
-              <span class="icon">📧</span>
-              Contactează-mă
-            </button> -->
+        <div class="header-row">
+          <h1 class="header-logo">🎁 Obiecte gratuite · Donații</h1>
+          <p class="header-description">Lucruri bune caută casă nouă – complet gratuit!</p>
+          <div class="header-stats">
+            <span class="stats-label">Disponibile:</span>
+            <span class="stats-number" id="availableCount">0</span>
           </div>
         </div>
       </div>
@@ -50,10 +42,10 @@
         <!-- Stats Section -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon">🎁</div>
+            <div class="stat-icon">🕒</div>
             <div class="stat-info">
-              <div class="stat-number" id="availableStats">5</div>
-              <div class="stat-label">Obiecte Disponibile</div>
+              <div class="stat-number" id="lastUpdate">23 iulie 2025</div>
+              <div class="stat-label">Ultima actualizare</div>
             </div>
           </div>
 
@@ -211,8 +203,6 @@
         </div>
 
         <div class="modal-body">
-          <p class="contact-intro">Primul venit, primul servit și trebuie ridicate!</p>
-
           <div class="contact-methods">
             <a class="contact-method" href="https://wa.me/40730020215" target="_blank" rel="noopener">
               <div class="contact-icon" style="background: none; padding: 0">
