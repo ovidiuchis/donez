@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const originalLink = (item.Link || "").trim();
         const disponibil = (item.Disponibil || "").trim().toLowerCase();
         const isAvailable = disponibil === "da" || disponibil === "1" || disponibil === "true";
+        const isReserved = disponibil === "rezervat";
         const dateAdded = (item.Data || "").trim();
         return {
           title,
@@ -69,13 +70,18 @@ document.addEventListener("DOMContentLoaded", function () {
           images,
           originalLink,
           isAvailable,
+          isReserved,
           dateAdded
         };
       });
       // Sort so available items come first
       garageItems.sort((a, b) => {
-        if (a.isAvailable === b.isAvailable) return 0;
-        return a.isAvailable ? -1 : 1;
+        // Available first, then reserved, then unavailable
+        if (a.isAvailable && !b.isAvailable) return -1;
+        if (!a.isAvailable && b.isAvailable) return 1;
+        if (a.isReserved && !b.isReserved && !b.isAvailable) return -1;
+        if (!a.isReserved && b.isReserved && !a.isAvailable) return 1;
+        return 0;
       });
       filteredItems = [...garageItems];
       updateStats();
@@ -86,91 +92,88 @@ document.addEventListener("DOMContentLoaded", function () {
       // Hide loader overlay
       const loader = document.getElementById("loaderOverlay");
       if (loader) loader.style.display = "none";
-      // Setup event listeners for search
-      function setupEventListeners() {
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) {
-          searchInput.addEventListener("input", function (e) {
-            searchTerm = e.target.value.toLowerCase();
-            filterItems();
-          });
-        }
-      }
-
-      // Filter items based on search
-      function filterItems() {
-        filteredItems = garageItems.filter(item => {
-          if (searchTerm) {
-            const matchesSearch =
-              item.title.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm);
-            if (!matchesSearch) return false;
-          }
-          return true;
-        });
-        // Sort so available items come first
-        filteredItems.sort((a, b) => {
-          if (a.isAvailable === b.isAvailable) return 0;
-          return a.isAvailable ? -1 : 1;
-        });
-        renderItems();
-        updateResultsCount();
-      }
-
-      // Update results count
-      function updateResultsCount() {
-        // Always count the actual number of cards shown in the grid
-        const gridItems = itemsGrid ? itemsGrid.children.length : 0;
-        const total = garageItems.length;
-        if (resultsCount) resultsCount.textContent = `Se afișează ${gridItems} din ${total} obiecte`;
-
-        if (gridItems === 0) {
-          if (itemsGrid) itemsGrid.style.display = "none";
-          if (noResults) noResults.style.display = "block";
-        } else {
-          if (itemsGrid) itemsGrid.style.display = "grid";
-          if (noResults) noResults.style.display = "none";
-        }
-      }
-    })
-    .catch(err => {
-      console.error("Eroare la încărcarea CSV", err);
-      // fallback: show nothing
     });
-});
 
-// Update statistics
-function updateStats() {
-  const availableCount = garageItems.filter(item => item.isAvailable).length;
-  const totalCount = garageItems.length;
-  const availableCountEl = document.getElementById("availableCount");
-  const availableStatsEl = document.getElementById("availableStats");
-  if (availableCountEl) availableCountEl.textContent = `${availableCount}/${totalCount}`;
-  if (availableStatsEl) availableStatsEl.textContent = availableCount;
-}
-
-// Set last update stat to the maximum date from garageItems
-function updateLastUpdateStat() {
-  if (!garageItems.length) return;
-  // Find the max date from all items
-  let maxDate = null;
-  garageItems.forEach(item => {
-    const d = parseDate(item.dateAdded);
-    if (d && (!maxDate || d > maxDate)) maxDate = d;
-  });
-  const lastUpdateEl = document.getElementById("lastUpdate");
-  if (lastUpdateEl && maxDate) {
-    lastUpdateEl.textContent = maxDate.toLocaleDateString("ro-RO", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
+  // Update statistics
+  function updateStats() {
+    const availableCount = garageItems.filter(item => item.isAvailable).length;
+    const totalCount = garageItems.length;
+    const availableCountEl = document.getElementById("availableCount");
+    const availableStatsEl = document.getElementById("availableStats");
+    if (availableCountEl) availableCountEl.textContent = `${availableCount}/${totalCount}`;
+    if (availableStatsEl) availableStatsEl.textContent = availableCount;
   }
-}
+
+  // Set last update stat to the maximum date from garageItems
+  function updateLastUpdateStat() {
+    if (!garageItems.length) return;
+    // Find the max date from all items
+    let maxDate = null;
+    garageItems.forEach(item => {
+      const d = parseDate(item.dateAdded);
+      if (d && (!maxDate || d > maxDate)) maxDate = d;
+    });
+    const lastUpdateEl = document.getElementById("lastUpdate");
+    if (lastUpdateEl && maxDate) {
+      lastUpdateEl.textContent = maxDate.toLocaleDateString("ro-RO", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+  }
+
+  // Setup event listeners for search
+  function setupEventListeners() {
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.addEventListener("input", function (e) {
+        searchTerm = e.target.value.toLowerCase();
+        filterItems();
+      });
+    }
+  }
+
+  // Filter items based on search
+  function filterItems() {
+    filteredItems = garageItems.filter(item => {
+      if (searchTerm) {
+        const matchesSearch =
+          item.title.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm);
+        if (!matchesSearch) return false;
+      }
+      return true;
+    });
+    // Sort so available items come first
+    filteredItems.sort((a, b) => {
+      if (a.isAvailable === b.isAvailable) return 0;
+      return a.isAvailable ? -1 : 1;
+    });
+    renderItems();
+    updateResultsCount();
+  }
+
+  // Update results count
+  function updateResultsCount() {
+    // Always count the actual number of cards shown in the grid
+    const gridItems = itemsGrid ? itemsGrid.children.length : 0;
+    const total = garageItems.length;
+    if (resultsCount) resultsCount.textContent = `Se afișează ${gridItems} din ${total} obiecte`;
+
+    if (gridItems === 0) {
+      if (itemsGrid) itemsGrid.style.display = "none";
+      if (noResults) noResults.style.display = "block";
+    } else {
+      if (itemsGrid) itemsGrid.style.display = "grid";
+      if (noResults) noResults.style.display = "none";
+    }
+  }
+});
 
 // Helper to parse date from dd/mm/yyyy or ISO
 function parseDate(dateString) {
   if (!dateString) return null;
-  // Try dd/mm/yyyy
+
   const parts = dateString.split("/");
   if (parts.length === 3) {
     let [day, month, year] = parts.map(p => p.trim());
@@ -204,6 +207,7 @@ function createItemCard(item) {
   card.onclick = () => openItemModal(item);
 
   const isAvailable = item.isAvailable;
+  const isReserved = item.isReserved;
   const hasOriginalLink = item.originalLink;
 
   const imageUrl = item.images && item.images[0] ? item.images[0] : "assets/default.png";
@@ -211,10 +215,19 @@ function createItemCard(item) {
         <div class="item-image-container">
             <img src="${imageUrl}" alt="${item.title}" class="item-image">
             ${
-              !isAvailable
+              !isAvailable && !isReserved
                 ? `
                 <div class="item-status-overlay">
-                    <div class="status-badge">Nu Mai Este Disponibil</div>
+                    <div class="status-badge">Nu mai este disponibil</div>
+                </div>
+            `
+                : ""
+            }
+            ${
+              isReserved
+                ? `
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div class="status-badge status-badge-blue">Obiect rezervat</div>
                 </div>
             `
                 : ""
@@ -252,9 +265,13 @@ function openItemModal(item) {
 
   // Update badges
   const modalBadges = document.getElementById("modalBadges");
-  modalBadges.innerHTML = item.isAvailable
-    ? '<div class="free-badge">GRATUIT</div>'
-    : '<div class="status-badge">Nu Mai Este Disponibil</div>';
+  if (item.isAvailable) {
+    modalBadges.innerHTML = '<div class="free-badge">GRATUIT</div>';
+  } else if (item.isReserved) {
+    modalBadges.innerHTML = '<div class="status-badge status-badge-blue">Rezervat</div>';
+  } else {
+    modalBadges.innerHTML = '<div class="status-badge">Nu Mai Este Disponibil</div>';
+  }
 
   // Update image
   updateModalImage();
@@ -263,7 +280,7 @@ function openItemModal(item) {
   const contactBtn = document.getElementById("contactItemBtn");
   const originalBtn = document.getElementById("originalLinkBtn");
 
-  contactBtn.style.display = item.isAvailable ? "block" : "none";
+  contactBtn.style.display = item.isAvailable || item.isReserved ? "block" : "none";
   originalBtn.style.display = item.originalLink ? "block" : "none";
 
   // Show modal
