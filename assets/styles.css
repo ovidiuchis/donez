@@ -333,7 +333,7 @@ h6 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  /* margin-bottom: var(--spacing-md); */
 }
 
 .stat-card {
@@ -1029,7 +1029,7 @@ h6 {
     font-size: 0.85rem;
     text-align: center;
   }
-  
+
   /* Center elements inside header-stats */
   .header-stats {
     justify-content: center;
