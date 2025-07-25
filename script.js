@@ -326,13 +326,13 @@ function updateModalImage() {
   const prevBtn = document.getElementById("imagePrevBtn");
   const nextBtn = document.getElementById("imageNextBtn");
   if (currentItem.images && currentItem.images.length > 1) {
-    prevBtn.style.display = "flex";
-    nextBtn.style.display = "flex";
+    prevBtn.classList.remove("modal-image-nav-hidden");
+    nextBtn.classList.remove("modal-image-nav-hidden");
     prevBtn.disabled = currentImageIndex === 0;
     nextBtn.disabled = currentImageIndex === currentItem.images.length - 1;
   } else {
-    prevBtn.style.display = "none";
-    nextBtn.style.display = "none";
+    prevBtn.classList.add("modal-image-nav-hidden");
+    nextBtn.classList.add("modal-image-nav-hidden");
   }
 }
 
@@ -456,3 +456,9 @@ document.addEventListener("keydown", function (event) {
     }
   }
 });
+
+window.changeImage = function (index) {
+  if (!currentItem || !currentItem.images || index < 0 || index >= currentItem.images.length) return;
+  currentImageIndex = index;
+  updateModalImage();
+};

@@ -85,7 +85,7 @@
         </div>
 
         <!-- No Results -->
-        <div class="no-results" id="noResults" style="display: none">
+        <div class="no-results" id="noResults" class="d-none">
           <div class="no-results-content">
             <div class="no-results-icon">🔍</div>
             <h3 class="no-results-title">Niciun obiect găsit</h3>
@@ -101,17 +101,12 @@
       <div class="container">
         <div class="footer-content">
           <h3 class="footer-title">· simplicity is the ultimate sophistication ·</h3>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap">
+          <div class="flex-center-wrap">
             <button class="btn btn-primary" onclick="openContactModal()">📧 Contactează-mă</button>
             <button class="btn btn-primary" onclick="openMotivationModal()">👌 De ce donez?</button>
           </div>
           <!-- Motivation Modal -->
-          <div
-            class="modal-backdrop"
-            id="motivationModal"
-            onclick="closeMotivationModal(event)"
-            style="display: flex; visibility: hidden; opacity: 0"
-          >
+          <div class="modal-backdrop" id="motivationModal" onclick="closeMotivationModal(event)" class="modal-visible">
             <div class="modal-content contact-modal">
               <div class="modal-header">
                 <h2 class="modal-title">De ce donez?</h2>
@@ -147,20 +142,18 @@
         <div class="modal-body">
           <div class="image-gallery">
             <button
-              class="image-nav image-nav-left"
+              class="image-nav image-nav-left modal-image-nav-hidden"
               id="imagePrevBtn"
               onclick="prevImage(event)"
-              style="display: none"
               aria-label="Imagine anterioară"
             >
               <span>&#8592;</span>
             </button>
             <img id="modalImage" src="" alt="" class="modal-image" />
             <button
-              class="image-nav image-nav-right"
+              class="image-nav image-nav-right modal-image-nav-hidden"
               id="imageNextBtn"
               onclick="nextImage(event)"
-              style="display: none"
               aria-label="Imagine următoare"
             >
               <span>&#8594;</span>
@@ -205,11 +198,11 @@
         <div class="modal-body">
           <div class="contact-methods">
             <a class="contact-method" href="https://wa.me/40730020215" target="_blank" rel="noopener">
-              <div class="contact-icon" style="background: none; padding: 0">
+              <div class="contact-icon contact-icon-no-bg">
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
                   alt="WhatsApp"
-                  style="width: 28px; height: 28px; display: block"
+                  class="whatsapp-img"
                 />
               </div>
               <div class="contact-info">
@@ -223,7 +216,7 @@
               <div class="contact-info">
                 <h3 class="contact-title">Locația de Ridicare</h3>
                 <p class="contact-detail">Cartierul Bună ziua</p>
-                <p class="contact-detail" style="font-size: 0.95em; color: var(--color-primary)">Vezi pe Google Maps</p>
+                <p class="contact-detail contact-detail-primary">Vezi pe Google Maps</p>
               </div>
             </a>
           </div>

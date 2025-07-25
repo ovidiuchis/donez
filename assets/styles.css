@@ -1,3 +1,35 @@
+/* === Utility Classes === */
+.d-none {
+  display: none !important;
+}
+.flex-center-wrap {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.modal-visible {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.contact-icon-no-bg {
+  background: none !important;
+  padding: 0 !important;
+}
+.whatsapp-img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+.contact-detail-primary {
+  font-size: 0.95em;
+  color: var(--color-primary);
+}
+.modal-image-nav-hidden {
+  display: none !important;
+}
+
 /* Original Link Button Modern Style */
 #originalLinkBtn {
   display: inline-flex;
@@ -73,13 +105,6 @@
   text-decoration: none;
 }
 
-.contact-method:visited {
-  text-decoration: none;
-}
-
-.contact-method:hover {
-  text-decoration: none;
-}
 /* Modern Garage Sale CSS */
 
 :root {
