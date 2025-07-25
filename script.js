@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const isAvailable = disponibil === "da" || disponibil === "1" || disponibil === "true";
         const isReserved = disponibil === "rezervat";
         const dateAdded = (item.Data || "").trim();
+        const id = slugify(title);
         return {
+          id,
           title,
           description,
           images,
@@ -92,6 +94,13 @@ document.addEventListener("DOMContentLoaded", function () {
       // Hide loader overlay
       const loader = document.getElementById("loaderOverlay");
       if (loader) loader.style.display = "none";
+      // After items are loaded, check for deep link
+      const params = new URLSearchParams(window.location.search);
+      const itemId = params.get("item");
+      if (itemId) {
+        const item = garageItems.find(i => i.id === itemId);
+        if (item) openItemModal(item);
+      }
     });
 
   // Update statistics
@@ -283,6 +292,10 @@ function openItemModal(item) {
   contactBtn.style.display = item.isAvailable || item.isReserved ? "block" : "none";
   originalBtn.style.display = item.originalLink ? "block" : "none";
 
+  // Update URL for deep link
+  if (item.id) {
+    window.history.pushState({}, "", `?item=${encodeURIComponent(item.id)}`);
+  }
   // Show modal
   itemModal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -294,6 +307,8 @@ function closeItemModal(event) {
   itemModal.classList.remove("open");
   document.body.style.overflow = "";
   currentItem = null;
+  // Restore URL
+  window.history.pushState({}, "", window.location.pathname);
 }
 
 function updateModalImage() {
@@ -433,6 +448,18 @@ function formatDate(dateString) {
     month: "long",
     day: "numeric"
   });
+}
+
+// Utility: slugify for item IDs
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
 }
 
 // Close modals when clicking outside
