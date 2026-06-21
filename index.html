@@ -7,7 +7,10 @@
     <meta name="description" content="Obiecte gratuite căutând case noi" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="assets/styles.css" />
@@ -66,17 +69,10 @@
           </div>
         </div>
 
-        <!-- Search Section -->
-        <div class="search-section">
-          <div class="search-bar">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Caută obiecte..." class="search-input" />
-          </div>
-        </div>
-
-        <!-- Results Count -->
-        <div class="results-info">
-          <span id="resultsCount">Se afișează 6 din 6 obiecte</span>
+        <!-- Section head -->
+        <div class="section-head">
+          <h2 class="section-title">Obiecte disponibile</h2>
+          <span class="results-info" id="resultsCount">Se afișează 6 din 6 obiecte</span>
         </div>
 
         <!-- Items Grid -->
@@ -87,10 +83,9 @@
         <!-- No Results -->
         <div class="no-results" id="noResults" class="d-none">
           <div class="no-results-content">
-            <div class="no-results-icon">🔍</div>
-            <h3 class="no-results-title">Niciun obiect găsit</h3>
-            <p class="no-results-text">Încearcă să ajustezi căutarea pentru a găsi ceea ce cauți.</p>
-            <button class="btn btn-outline" onclick="clearFilters()">Șterge Toate Filtrele</button>
+            <div class="no-results-icon">📦</div>
+            <h3 class="no-results-title">Niciun obiect disponibil</h3>
+            <p class="no-results-text">Momentan nu există obiecte de afișat. Revino mai târziu.</p>
           </div>
         </div>
       </div>
@@ -100,7 +95,7 @@
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
-          <h3 class="footer-title">· simplicity is the ultimate sophistication ·</h3>
+          <h3 class="footer-title">"simplitatea este cel mai sofisticat lucru"</h3>
           <div class="flex-center-wrap">
             <button class="btn btn-primary" onclick="openContactModal()">📧 Contactează-mă</button>
             <button class="btn btn-primary" onclick="openMotivationModal()">👌 De ce donez?</button>
@@ -114,11 +109,9 @@
               </div>
               <div class="modal-body">
                 <p class="contact-intro" style="text-indent: 2em; margin-bottom: 1em">
-                  <b>Motivația</b> mea e simplă: cred că lucrurile bune merită folosite, nu aruncate. Și mai cred că ne face
-                  bine să ne „curățăm” din când în când spațiul de obiectele pe care nu le mai folosim.
-                </p>
-                <p class="contact-intro" style="text-indent: 2em; margin-bottom: 1em">
-                  Ba chiar, ideal ar fi să nu mai cumpărăm mereu altele noi. 😬
+                  <b>Motivația</b> mea e simplă: lucrurile bune merită folosite, nu aruncate. Și cred că ne face bine să ne
+                  mai eliberăm din când în când spațiul de obiectele pe care nu le mai folosim — iar, în mod ideal, să nu ne
+                  grăbim mereu să cumpărăm altele noi. 😬
                 </p>
                 <p class="contact-intro" style="text-align: right">
                   <b><a href="https://ovidiuchis.ro/" class="signature-link" target="_blank" rel="noopener">Ovidiu</a></b>

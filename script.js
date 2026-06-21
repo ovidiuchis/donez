@@ -12,14 +12,11 @@ const contactInfo = {
 };
 
 // State management
-let searchTerm = "";
 let currentItem = null;
 let currentImageIndex = 0;
 
 // DOM elements
 const itemsGrid = document.getElementById("itemsGrid");
-const searchInput = document.getElementById("searchInput"); // not used, but kept for possible future search
-const availableFilter = document.getElementById("availableFilter"); // not used, but kept for possible future filter
 const resultsCount = document.getElementById("resultsCount");
 const noResults = document.getElementById("noResults");
 const itemModal = document.getElementById("itemModal");
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
       updateLastUpdateStat();
       renderItems();
       updateResultsCount();
-      setupEventListeners();
       // Hide loader overlay
       const loader = document.getElementById("loaderOverlay");
       if (loader) loader.style.display = "none";
@@ -121,42 +117,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Setup event listeners for search
-  function setupEventListeners() {
-    const searchInput = document.getElementById("searchInput");
-    if (searchInput) {
-      searchInput.addEventListener("input", function (e) {
-        searchTerm = e.target.value.toLowerCase();
-        filterItems();
-      });
-    }
-  }
-
-  // Filter items based on search
-  function filterItems() {
-    filteredItems = garageItems.filter(item => {
-      if (searchTerm) {
-        const matchesSearch =
-          item.title.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm);
-        if (!matchesSearch) return false;
-      }
-      return true;
-    });
-    // Sort so available items come first
-    filteredItems.sort((a, b) => {
-      if (a.isAvailable === b.isAvailable) return 0;
-      return a.isAvailable ? -1 : 1;
-    });
-    renderItems();
-    updateResultsCount();
-  }
-
   // Update results count
   function updateResultsCount() {
     // Always count the actual number of cards shown in the grid
     const gridItems = itemsGrid ? itemsGrid.children.length : 0;
     const total = garageItems.length;
-    if (resultsCount) resultsCount.textContent = `Se afișează ${gridItems} din ${total} obiecte`;
+    const availableCount = garageItems.filter(item => item.isAvailable).length;
+    if (resultsCount) resultsCount.textContent = `Disponibile ${availableCount} din ${total} obiecte`;
 
     if (gridItems === 0) {
       if (itemsGrid) itemsGrid.style.display = "none";
@@ -358,14 +325,6 @@ function contactAboutItem() {
   const message = `Salut! Sunt interesat de "${currentItem.title}" pe care îl donezi. Mai este disponibil?`;
   const whatsappUrl = `https://wa.me/40730020215?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
-}
-
-// Clear search filter
-function clearFilters() {
-  searchTerm = "";
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) searchInput.value = "";
-  filterItems();
 }
 
 function openOriginalLink() {
