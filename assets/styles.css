@@ -164,12 +164,6 @@ h4 {
 .d-none {
   display: none !important;
 }
-.flex-center-wrap {
-  display: flex;
-  gap: var(--sp-md);
-  justify-content: center;
-  flex-wrap: wrap;
-}
 .modal-image-nav-hidden {
   display: none !important;
 }
@@ -595,12 +589,47 @@ h4 {
   gap: var(--sp-lg);
   text-align: center;
 }
-.footer-title {
+.footer-quote {
+  max-width: 32ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
+}
+.footer-actions {
+  display: flex;
+  gap: var(--sp-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
   font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   letter-spacing: 0.02em;
   color: var(--text-faint);
+}
+.footer-admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--text-faint);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  opacity: 0.6;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+.footer-admin:hover {
+  color: var(--accent);
+  border-color: var(--border-strong);
+  opacity: 1;
 }
 .signature-link {
   color: var(--accent);

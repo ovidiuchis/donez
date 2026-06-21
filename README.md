@@ -18,14 +18,17 @@ Minimalismul nu e doar un trend pentru mine – e un stil de viață. Îmi place
 ## Tehnologie
 
 - SPA minimalistă (HTML, CSS, JavaScript vanilla)
-- Datele despre obiecte vin direct dintr-un Google Sheet public (CSV)
-- Design responsive, mobile-first
+- Datele despre obiecte vin din [Sanity](https://www.sanity.io/) (CMS headless), interogate prin GROQ direct din browser
+- Design responsive, mobile-first, cu temă deschisă și întunecată automată
 - Fără framework-uri, fără bloat
 
 ## Cum adaug obiecte?
 
-1. Editează Google Sheet-ul conectat (vezi sursa în `script.js`).
-2. Salvează, iar site-ul se actualizează automat.
+1. Intră în Sanity Studio: [donez-oc-ro.sanity.studio](https://donez-oc-ro.sanity.studio/).
+2. Adaugă sau editează un obiect (titlu, descriere, imagini, disponibilitate).
+3. Publică, iar site-ul afișează automat datele actualizate.
+
+> Configurarea proiectului Sanity (projectId, dataset) se află în `config.js`.
 
 ## Vrei să donezi și tu?
 
