@@ -27,44 +27,28 @@ const contactModal = document.getElementById("contactModal");
 
 // Initialize the app
 document.addEventListener("DOMContentLoaded", function () {
-  // Load items from Google Sheets CSV
-  const SHEET_CSV_URL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSd9ak0x4hKnlFnEoU313y5mk4a1K2yHsYL_6Q-JTU5DDjnZLreqVOsuVe808xA5JmfyeRplGOpM8H7/pub?gid=0&single=true&output=csv";
+  // Load items from Sanity (config in config.js)
+  const groqQuery =
+    '*[_type=="obiectDonat"]{title,description,"images":images[].asset->url,sourceLink,available,datePosted,"slug":slug.current}';
+  const SANITY_URL =
+    `https://${SANITY.projectId}.apicdn.sanity.io/${SANITY.apiVersion}/data/query/${SANITY.dataset}` +
+    `?query=${encodeURIComponent(groqQuery)}`;
 
-  function csvToArray(str, delimiter = ",") {
-    const rows = str.trim().split("\n");
-    const headers = rows.shift().split(delimiter);
-    return rows.map(row => {
-      const values = row.split(delimiter);
-      return headers.reduce((obj, header, i) => {
-        obj[header.trim()] = values[i]?.trim() || "";
-        return obj;
-      }, {});
-    });
-  }
-
-  fetch(SHEET_CSV_URL)
-    .then(res => res.text())
-    .then(csv => {
-      const items = csvToArray(csv);
-      // Optionally, map/convert fields to match your app's expectations
+  fetch(SANITY_URL)
+    .then(res => res.json())
+    .then(({ result }) => {
+      const items = result || [];
+      // Map Sanity documents to the shape the app expects
       garageItems = items.map(item => {
-        // Trim all fields (no more id)
-        const title = (item.Titlu || "").trim();
-        const description = (item.Descriere || "").trim();
-        const imagesRaw = (item.Imagini || "").trim();
-        const images = imagesRaw
-          ? imagesRaw
-              .split("|")
-              .map(url => url.trim())
-              .filter(Boolean)
-          : [];
-        const originalLink = (item.Link || "").trim();
-        const disponibil = (item.Disponibil || "").trim().toLowerCase();
-        const isAvailable = disponibil === "da" || disponibil === "1" || disponibil === "true";
-        const isReserved = disponibil === "rezervat";
-        const dateAdded = (item.Data || "").trim();
-        const id = slugify(title);
+        const title = (item.title || "").trim();
+        const description = (item.description || "").trim();
+        const images = Array.isArray(item.images) ? item.images.filter(Boolean) : [];
+        const originalLink = (item.sourceLink || "").trim();
+        const isAvailable = item.available === true;
+        // Sanity has no "reserved" state, only the available boolean
+        const isReserved = false;
+        const dateAdded = (item.datePosted || "").trim();
+        const id = (item.slug || "").trim();
         return {
           id,
           title,
@@ -101,6 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const item = garageItems.find(i => i.id === itemId);
         if (item) openItemModal(item);
       }
+    })
+    .catch(err => {
+      console.error("Eroare la încărcarea datelor din Sanity:", err);
+      const loader = document.getElementById("loaderOverlay");
+      if (loader) loader.style.display = "none";
     });
 
   // Update statistics
@@ -179,25 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Helper to parse date from dd/mm/yyyy or ISO
+// Helper to parse an ISO date (Sanity datePosted, e.g. "2025-07-19")
 function parseDate(dateString) {
   if (!dateString) return null;
-
-  const parts = dateString.split("/");
-  if (parts.length === 3) {
-    let [day, month, year] = parts.map(p => p.trim());
-    const d = parseInt(day, 10);
-    const m = parseInt(month, 10);
-    const y = parseInt(year, 10);
-    if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
-      const date = new Date(Date.UTC(y, m - 1, d));
-      if (!isNaN(date.getTime())) return date;
-    }
-  }
-  // fallback
   const date = new Date(dateString);
-  if (!isNaN(date.getTime())) return date;
-  return null;
+  return isNaN(date.getTime()) ? null : date;
 }
 
 // Render items grid
@@ -448,18 +423,6 @@ function formatDate(dateString) {
     month: "long",
     day: "numeric"
   });
-}
-
-// Utility: slugify for item IDs
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-")
-    .replace(/^-+/, "")
-    .replace(/-+$/, "");
 }
 
 // Close modals when clicking outside
