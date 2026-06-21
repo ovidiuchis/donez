@@ -150,10 +150,7 @@ h4 {
 /* The mono "data layer" — labels, counts, dates, badges */
 .eyebrow,
 .stat-label,
-.stats-label,
 .stat-number,
-.stats-number,
-.results-info,
 .free-badge,
 .status-badge,
 .date-info {
@@ -245,39 +242,39 @@ h4 {
   margin: 0;
   min-width: 0;
 }
-.header-stats {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-  white-space: nowrap;
-}
-.stats-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-}
-.stats-number {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--accent);
-}
 
 /* ------------------------------ Main ------------------------------- */
 .main {
   padding: var(--sp-2xl) 0 var(--sp-2xl);
 }
 
-/* ---------------------------- Stats grid --------------------------- */
+/* ----------------------------- Stats bar --------------------------- */
+/* A recessed panel that reads as a distinct layer above the items grid.
+   Cards float on a muted band; the live "available" count is the primary
+   signal, set apart in accent. A divider closes the band so the grouping
+   of stats vs. the freeform items below is unmistakable. */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-md);
-  margin-bottom: var(--sp-xl);
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-sm);
+  padding: var(--sp-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--sp-2xl);
+  position: relative;
+}
+/* Closing rule under the bar — visually seals the stats layer off
+   from the items that follow. */
+.stats-grid::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: calc(var(--sp-xl) * -1);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
 }
 .stat-card {
   display: flex;
@@ -287,11 +284,28 @@ h4 {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
 }
 .stat-card:hover {
   border-color: var(--border-strong);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+/* The live availability count — the headline metric of the whole bar. */
+.stat-card--primary {
+  background: var(--accent-weak);
+  border-color: transparent;
+}
+.stat-card--primary .stat-icon {
+  font-size: 1.6rem;
+}
+.stat-card--primary .stat-number {
+  font-size: 1.5rem;
+  color: var(--accent-strong);
+}
+.stat-card--primary .stat-label {
+  color: var(--accent-strong);
 }
 .stat-icon {
   font-size: 1.4rem;
@@ -314,28 +328,6 @@ h4 {
   letter-spacing: 0.09em;
   color: var(--text-faint);
   margin-top: 0.15rem;
-}
-
-/* --------------------------- Section head -------------------------- */
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-sm) var(--sp-md);
-  flex-wrap: wrap;
-  margin-bottom: var(--sp-lg);
-  padding-bottom: var(--sp-sm);
-  border-bottom: 1px solid var(--border);
-}
-.section-title {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  margin: 0;
-}
-.results-info {
-  color: var(--text-faint);
-  font-size: 0.78rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
 }
 
 /* ---------------------------- Items grid --------------------------- */
@@ -923,8 +915,11 @@ h4 {
     padding: var(--sp-xl) 0;
   }
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-sm);
+  }
+  .stat-card--primary {
+    grid-column: 1 / -1;
   }
   .stat-card {
     padding: var(--sp-md);

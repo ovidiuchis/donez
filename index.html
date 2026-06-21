@@ -31,10 +31,6 @@
         <div class="header-row">
           <h1 class="header-logo">🎁 Obiecte gratuite · Donații</h1>
           <p class="header-description">Lucruri bune caută casă nouă – complet gratuit!</p>
-          <div class="header-stats">
-            <span class="stats-label">Disponibile:</span>
-            <span class="stats-number" id="availableCount">0</span>
-          </div>
         </div>
       </div>
     </header>
@@ -44,11 +40,19 @@
       <div class="container">
         <!-- Stats Section -->
         <div class="stats-grid">
+          <div class="stat-card stat-card--primary">
+            <div class="stat-icon">🎁</div>
+            <div class="stat-info">
+              <div class="stat-number" id="availableStats">0</div>
+              <div class="stat-label">Obiecte disponibile</div>
+            </div>
+          </div>
+
           <div class="stat-card">
             <div class="stat-icon">🕒</div>
             <div class="stat-info">
               <div class="stat-number" id="lastUpdate">23 iulie 2025</div>
-              <div class="stat-label">Ultima actualizare</div>
+              <div class="stat-label">Actualizat</div>
             </div>
           </div>
 
@@ -67,12 +71,6 @@
               <div class="stat-label">Cluj Napoca</div>
             </div>
           </div>
-        </div>
-
-        <!-- Section head -->
-        <div class="section-head">
-          <h2 class="section-title">Obiecte disponibile</h2>
-          <span class="results-info" id="resultsCount">Se afișează 6 din 6 obiecte</span>
         </div>
 
         <!-- Items Grid -->

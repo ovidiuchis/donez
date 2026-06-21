@@ -17,7 +17,6 @@ let currentImageIndex = 0;
 
 // DOM elements
 const itemsGrid = document.getElementById("itemsGrid");
-const resultsCount = document.getElementById("resultsCount");
 const noResults = document.getElementById("noResults");
 const itemModal = document.getElementById("itemModal");
 const contactModal = document.getElementById("contactModal");
@@ -91,10 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update statistics
   function updateStats() {
     const availableCount = garageItems.filter(item => item.isAvailable).length;
-    const totalCount = garageItems.length;
-    const availableCountEl = document.getElementById("availableCount");
     const availableStatsEl = document.getElementById("availableStats");
-    if (availableCountEl) availableCountEl.textContent = `${availableCount}/${totalCount}`;
     if (availableStatsEl) availableStatsEl.textContent = availableCount;
   }
 
@@ -121,9 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateResultsCount() {
     // Always count the actual number of cards shown in the grid
     const gridItems = itemsGrid ? itemsGrid.children.length : 0;
-    const total = garageItems.length;
-    const availableCount = garageItems.filter(item => item.isAvailable).length;
-    if (resultsCount) resultsCount.textContent = `Disponibile ${availableCount} din ${total} obiecte`;
 
     if (gridItems === 0) {
       if (itemsGrid) itemsGrid.style.display = "none";
