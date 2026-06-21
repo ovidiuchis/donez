@@ -78,7 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const itemId = params.get("item");
       if (itemId) {
         const item = garageItems.find(i => i.id === itemId);
-        if (item) openItemModal(item);
+        if (item) {
+          // If the linked item is packed away (no longer available), expand
+          // the section so its card is visible behind the modal.
+          if (!item.isAvailable && !item.isReserved) {
+            const packedSection = document.getElementById("packedSection");
+            if (packedSection) packedSection.open = true;
+          }
+          openItemModal(item);
+        }
       }
     })
     .catch(err => {
@@ -135,13 +143,34 @@ function parseDate(dateString) {
   return isNaN(date.getTime()) ? null : date;
 }
 
-// Render items grid
+// Render items grid — active items stay in the main grid, items that are
+// no longer available are "packed away" into a collapsible section.
 function renderItems() {
+  const source = filteredItems.length ? filteredItems : garageItems;
+  const active = source.filter(item => item.isAvailable || item.isReserved);
+  const gone = source.filter(item => !item.isAvailable && !item.isReserved);
+
   itemsGrid.innerHTML = "";
-  (filteredItems.length ? filteredItems : garageItems).forEach(item => {
-    const itemCard = createItemCard(item);
-    itemsGrid.appendChild(itemCard);
-  });
+  active.forEach(item => itemsGrid.appendChild(createItemCard(item)));
+
+  renderPackedItems(gone);
+}
+
+// Render the collapsible "Deja donate" section with unavailable items
+function renderPackedItems(gone) {
+  const section = document.getElementById("packedSection");
+  const grid = document.getElementById("packedGrid");
+  const count = document.getElementById("packedCount");
+  if (!section || !grid) return;
+
+  grid.innerHTML = "";
+  if (!gone.length) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  if (count) count.textContent = gone.length;
+  gone.forEach(item => grid.appendChild(createItemCard(item)));
 }
 
 // Create item card element

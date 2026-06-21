@@ -73,10 +73,24 @@
           </div>
         </div>
 
-        <!-- Items Grid -->
+        <!-- Items Grid (available) -->
         <div class="items-grid" id="itemsGrid">
           <!-- Items will be populated by JavaScript -->
         </div>
+
+        <!-- Packed away: items no longer available, collapsed by default -->
+        <details class="packed" id="packedSection" hidden>
+          <summary class="packed-toggle">
+            <span class="packed-chevron" aria-hidden="true">▸</span>
+            <span class="packed-label">Deja donate</span>
+            <span class="packed-count" id="packedCount">0</span>
+          </summary>
+          <div class="packed-body">
+            <div class="items-grid items-grid--packed" id="packedGrid">
+              <!-- Unavailable items populated by JavaScript -->
+            </div>
+          </div>
+        </details>
 
         <!-- No Results -->
         <div class="no-results" id="noResults" class="d-none">

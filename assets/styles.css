@@ -337,6 +337,86 @@ h4 {
   gap: var(--sp-md);
 }
 
+/* ----------------------- Packed-away section ----------------------- */
+/* A collapsible "Deja donate" drawer holding items no longer available.
+   Native <details> for accessibility; CSS handles the chevron + reveal. */
+.packed {
+  margin-top: var(--sp-2xl);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-lg);
+}
+.packed-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  width: 100%;
+  padding: var(--sp-md) var(--sp-lg);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+  user-select: none;
+}
+.packed-toggle::-webkit-details-marker {
+  display: none;
+}
+.packed-toggle:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.packed-chevron {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--text-faint);
+  transition: transform 0.25s var(--ease);
+}
+.packed[open] .packed-chevron {
+  transform: rotate(90deg);
+}
+.packed-label {
+  flex: 1 1 auto;
+}
+.packed-count {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 0.1rem 0.55rem;
+}
+.packed-body {
+  padding-top: var(--sp-lg);
+}
+.packed[open] .packed-body {
+  animation: packReveal 0.32s var(--ease);
+}
+@keyframes packReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Packed cards read as an archive — denser and visually receded. */
+.items-grid--packed {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  opacity: 0.75;
+  transition: opacity 0.2s var(--ease);
+}
+.items-grid--packed:hover {
+  opacity: 1;
+}
+
 .item-card {
   position: relative;
   display: flex;
